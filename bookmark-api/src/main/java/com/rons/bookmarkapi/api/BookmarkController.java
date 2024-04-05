@@ -17,7 +17,13 @@ public class BookmarkController {
 
     @GetMapping
     //@RequestParam for pagination only few data at a page by default page number is 1.
-    public BookmarksDTO getBookmarks(@RequestParam(name = "page", defaultValue = "1") Integer page){
-        return bookmarkService.getBookmarks(page);
+    public BookmarksDTO getBookmarks(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                     @RequestParam(name = "query", defaultValue = "") String query
+                                     ){
+        if(query == null || query.trim().length() == 0){
+            return bookmarkService.getBookmarks(page);
+        }
+        return bookmarkService.searchBookmarks(query,page);
+
     }
 }
