@@ -1,0 +1,26 @@
+#THIS  IS MUCH FASTER THAN DOCKERFILE APPROACH
+
+#First stage of our buil will extract the layers
+
+#THis is the builder
+FROM eclipse-temurin:21-jdk as builder
+WORKDIR application
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+
+#Second stage of our buil will extract the layers
+FROM eclipse-temurin:21-jdk
+WORKDIR application
+
+#COPYING FROM BUILDER TO THE SECOND STAGE
+#BECAUSE THE BELOW THREE DEPENDENCIES OR FILES ARE CHANGED VERY RARELY
+#THE MOST COMMON FILE WHICH IS UPDATE FREQUENTLY IS THE APPLICATION CODE.
+
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+
+COPY --from=builder application/application/ ./
+ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]
