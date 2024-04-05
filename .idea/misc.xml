@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/spring-boot-kubernetes/bookmark-api/pom.xml" />
+        <option value="$PROJECT_DIR$/bookmark-api/pom.xml" />
       </list>
     </option>
   </component>
