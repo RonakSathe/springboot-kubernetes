@@ -23,7 +23,7 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: ./mvnw verify
+        run: ./spring-boot-kubernetes/mvnw verify
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/bookmarker-api:latest .
